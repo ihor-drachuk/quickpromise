@@ -1,24 +1,15 @@
-#
-# To build it with cmake, you should register qml types explicitly by calling registerQuickFluxQmlTypes() in your main.cpp
-# See examples/middleware for example
-#
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-cmake_minimum_required(VERSION 3.0.0)
-project(quickpromise)
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
 
-set(INCLUDE
-    ${CMAKE_CURRENT_SOURCE_DIR}/cpp/
-)
+find_package(Qt5 COMPONENTS Core Quick REQUIRED)
 
-set(SOURCES
-    ${CMAKE_CURRENT_SOURCE_DIR}/cpp/qppromise.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/cpp/qptimer.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/qml/quickpromise.qrc
-)
+FILE(GLOB_RECURSE SOURCES src/*.cpp src/*.h)
 
-set(HEADERS
-    ${CMAKE_CURRENT_SOURCE_DIR}/cpp/qppromise.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/cpp/qptimer.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/cpp/QuickPromise
-)
+add_library(quickpromise STATIC ${SOURCES} qml/quickpromise.qrc)
 
+target_compile_definitions(quickpromise PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
+target_link_libraries(quickpromise PUBLIC Qt5::Core Qt5::Quick)
+target_include_directories(quickpromise PUBLIC src)
