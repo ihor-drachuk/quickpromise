@@ -10,6 +10,5 @@ FILE(GLOB_RECURSE SOURCES src/*.cpp src/*.h)
 
 add_library(quickpromise STATIC ${SOURCES} qml/quickpromise.qrc)
 
-target_compile_definitions(quickpromise PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
 target_link_libraries(quickpromise PUBLIC Qt5::Core Qt5::Quick)
 target_include_directories(quickpromise PUBLIC src)
